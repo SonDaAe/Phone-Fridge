@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="등록하기"
+        android:layout_marginBottom="25dp"
+        ></TextView>
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@null"
+        android:src="@mipmap/ic_launcher"
+        android:layout_gravity="center"
+        android:layout_marginBottom="25dp"
+        ></ImageView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:layout_marginBottom="25dp"
+        >
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="상품명"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            ></TextView>
+        <EditText
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            ></EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:layout_marginBottom="25dp"
+        >
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="수량"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+
+            ></TextView>
+        <EditText
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            ></EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:layout_marginBottom="25dp"
+        >
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="구매일자"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+
+            ></TextView>
+        <EditText
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            ></EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:layout_marginBottom="25dp"
+        >
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="유통기한"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            ></TextView>
+        <EditText
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            ></EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:layout_marginBottom="25dp"
+        >
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="냉장/냉동"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            ></TextView>
+        <EditText
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            ></EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="등록"
+            android:layout_weight="5"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            ></Button>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="취소"
+            android:layout_weight="5"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            ></Button>
+    </LinearLayout>
+
+</LinearLayout>
