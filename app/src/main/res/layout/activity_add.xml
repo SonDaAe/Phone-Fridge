@@ -15,14 +15,13 @@
         ></TextView>
 
 
-    <ImageView
+    <ImageButton
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="@null"
-        android:src="@mipmap/ic_launcher"
+        android:src="@android:drawable/ic_menu_camera"
         android:layout_gravity="center"
         android:layout_marginBottom="25dp"
-        ></ImageView>
+        ></ImageButton>
 
     <LinearLayout
         android:layout_width="match_parent"
