@@ -13,15 +13,22 @@
         android:text="등록하기"
         android:layout_marginBottom="25dp"
         ></TextView>
-
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <ImageButton
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="300dp"
         android:src="@android:drawable/ic_menu_camera"
         android:layout_gravity="center"
         android:layout_marginBottom="25dp"
         android:id="@+id/pic_btn"
+        android:padding="0dp"
+        android:scaleType="centerCrop"
         ></ImageButton>
 
     <LinearLayout
@@ -157,5 +164,7 @@
             android:layout_marginLeft="5dp"
             ></Button>
     </LinearLayout>
+</LinearLayout>
+</ScrollView>
 
 </LinearLayout>
