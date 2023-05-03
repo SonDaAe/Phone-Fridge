@@ -132,10 +132,12 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="5dp"
             ></TextView>
-        <EditText
+        <Spinner
+            android:id="@+id/spinner"
             android:layout_width="320dp"
             android:layout_height="50dp"
-            ></EditText>
+            android:entries="@array/test">
+        </Spinner>
     </LinearLayout>
 
     <LinearLayout
