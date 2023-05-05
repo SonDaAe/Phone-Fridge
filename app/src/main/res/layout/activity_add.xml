@@ -49,6 +49,7 @@
         <EditText
             android:layout_width="320dp"
             android:layout_height="50dp"
+            android:id="@+id/product"
             ></EditText>
     </LinearLayout>
 
@@ -71,6 +72,7 @@
         <EditText
             android:layout_width="320dp"
             android:layout_height="50dp"
+            android:inputType="number"
             ></EditText>
     </LinearLayout>
 

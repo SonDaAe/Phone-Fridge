@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -24,6 +25,7 @@ class AddActivity : AppCompatActivity() {
 
         var option = findViewById<ImageButton>(R.id.pic_btn)
         var cancel = findViewById<Button>(R.id.cancel_btn)
+
 
         option.setOnClickListener {
             var popupMenu = PopupMenu(applicationContext, it)
