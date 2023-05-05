@@ -149,6 +149,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/register_btn"
             android:gravity="center"
             android:text="등록"
             android:layout_weight="5"
@@ -159,6 +160,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/cancel_btn"
             android:gravity="center"
             android:text="취소"
             android:layout_weight="5"

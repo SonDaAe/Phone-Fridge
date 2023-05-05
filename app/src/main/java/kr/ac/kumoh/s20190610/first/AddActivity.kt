@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -22,6 +23,7 @@ class AddActivity : AppCompatActivity() {
         checkPermission()
 
         var option = findViewById<ImageButton>(R.id.pic_btn)
+        var cancel = findViewById<Button>(R.id.cancel_btn)
 
         option.setOnClickListener {
             var popupMenu = PopupMenu(applicationContext, it)
@@ -49,6 +51,10 @@ class AddActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        cancel.setOnClickListener {
+            finish()
         }
     }
     private fun checkPermission() {
