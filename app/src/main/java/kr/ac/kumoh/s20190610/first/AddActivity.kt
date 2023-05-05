@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -36,6 +37,8 @@ class AddActivity : AppCompatActivity() {
                 when(it.itemId) {
                     R.id.action_menu1 -> {
                         Toast.makeText(applicationContext, "갤러리", Toast.LENGTH_SHORT).show()
+                        val gallery = Intent(Intent.ACTION_VIEW, Uri.parse("content://media/internal/images/media")) //갤러리 연결
+                        startActivity(gallery)
                         return@setOnMenuItemClickListener true
                     }
                     R.id.action_menu2 -> {
