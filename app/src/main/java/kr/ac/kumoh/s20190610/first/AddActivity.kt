@@ -1,9 +1,11 @@
 package kr.ac.kumoh.s20190610.first
 
 import android.Manifest
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Paint
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,9 +14,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import org.w3c.dom.Text
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddActivity : AppCompatActivity() {
     val REQUEST_IMAGE_CAPTURE = 1
@@ -24,9 +30,44 @@ class AddActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add)
         checkPermission()
 
+        var calendar = Calendar.getInstance()
+        var year = calendar.get(Calendar.YEAR)
+        var month = calendar.get(Calendar.MONTH)
+        var day = calendar.get(Calendar.DAY_OF_MONTH)
+
         var option = findViewById<ImageButton>(R.id.pic_btn)
         var cancel = findViewById<Button>(R.id.cancel_btn)
 
+        var cal_btn = findViewById<ImageButton>(R.id.calendar)
+        var cal_btn2 = findViewById<ImageButton>(R.id.calendar2)
+        var buy_date = findViewById<TextView>(R.id.buy_date)
+        var expi_date = findViewById<TextView>(R.id.expiration_date)
+
+        cal_btn.setOnClickListener { //구매일자 표시
+            val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
+                val calendar = Calendar.getInstance()
+                calendar.set(year, month, day)
+
+                val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+                val formattedDate = dateFormat.format(calendar.time)
+
+                buy_date.text = formattedDate
+            }, year, month, day)
+            datePickerDialog.show()
+        }
+
+        cal_btn2.setOnClickListener { //유통기한 표시
+            val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
+                val calendar = Calendar.getInstance()
+                calendar.set(year, month, day)
+
+                val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+                val formattedDate = dateFormat.format(calendar.time)
+
+                expi_date.text = formattedDate
+            }, year, month, day)
+            datePickerDialog.show()
+        }
 
         option.setOnClickListener {
             var popupMenu = PopupMenu(applicationContext, it)
