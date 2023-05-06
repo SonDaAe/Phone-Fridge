@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home"
+        android:enabled="true"
+        android:icon="@drawable/home"
+        android:title="홈"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/recipe"
+        android:enabled="true"
+        android:icon="@drawable/recipe"
+        android:title="레시피"
+        app:showAsAction="always"
+        />
+</menu>

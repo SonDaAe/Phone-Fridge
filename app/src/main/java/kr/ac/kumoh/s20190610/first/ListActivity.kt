@@ -4,16 +4,37 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.google.android.material.navigation.NavigationBarView
 
 class ListActivity : AppCompatActivity() {
+    val homeFragment = HomeFragment()
+    val recipeFragment = RecipeFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.contaiers, HomeFragment())
+            .commit()
+        val navigationBarView = findViewById<NavigationBarView>(R.id.bottom_navigationview)
 
-        val btn_add = findViewById<Button>(R.id.button)
-        btn_add.setOnClickListener {
-            startActivity(Intent(this, AddActivity::class.java))
+        navigationBarView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.contaiers, homeFragment)
+                        .commit()
+                    return@setOnItemSelectedListener true
+                }
+                R.id.recipe -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.contaiers, recipeFragment)
+                        .commit()
+                    return@setOnItemSelectedListener true
+                }
+                else -> return@setOnItemSelectedListener false
+            }
         }
     }
 }
