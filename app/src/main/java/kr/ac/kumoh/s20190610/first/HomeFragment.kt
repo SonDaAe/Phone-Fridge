@@ -1,12 +1,13 @@
 package kr.ac.kumoh.s20190610.first
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.content.Intent
+import androidx.fragment.app.Fragment
 import android.widget.Button
+import android.widget.PopupMenu
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,7 +19,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -31,27 +32,55 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // 레이아웃 파일을 inflate하여 View 객체를 생성합니다.
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        // 버튼을 찾아서 클릭 리스너를 등록합니다.
+        val button = view.findViewById<Button>(R.id.button)
+        button.setOnClickListener(this)
+
+        return view
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Find the button view by ID
+        // 아이디로 버튼 찾아서 클릭 리스너 등록
         val addButton = view.findViewById<Button>(R.id.button)
 
-        // Set onClickListener for the button
+        /*// Set onClickListener for the button
         addButton.setOnClickListener {
             // Start the addActivity
             val intent = Intent(activity, AddActivity::class.java)
             startActivity(intent)
+        }*/
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.button -> showPopup()
+            R.id.add_menu2 -> startActivity(Intent(requireActivity(), AddActivity::class.java))
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    private fun showPopup() {
+        // 팝업 메뉴를 띄우는 코드를 작성합니다.
+        val popupMenu = PopupMenu(requireActivity(), requireView().findViewById(R.id.button))
+        popupMenu.inflate(R.menu.add_popup)
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.add_menu1 -> true // 아직 반응 없음
+                R.id.add_menu2 -> {
+                    startActivity(Intent(requireActivity(), AddActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
     }
+
 
     companion object {
         /**

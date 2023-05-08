@@ -69,7 +69,7 @@ class AddActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        option.setOnClickListener {
+        option.setOnClickListener { //카메라 버튼 눌렀을 때
             var popupMenu = PopupMenu(applicationContext, it)
 
             menuInflater?.inflate(R.menu.popup, popupMenu.menu)

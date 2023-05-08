@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/add_menu1"
+        android:title="영수증 인식" />
+    <item
+        android:id="@+id/add_menu2"
+        android:title="직접 입력" />
+</menu>
