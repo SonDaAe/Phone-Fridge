@@ -60,7 +60,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.button -> showPopup()
-            R.id.add_menu2 -> startActivity(Intent(requireActivity(), AddActivity::class.java))
         }
     }
 
@@ -70,7 +69,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
         popupMenu.inflate(R.menu.add_popup)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.add_menu1 -> true // 아직 반응 없음
+                R.id.add_menu1 -> {
+                    startActivity(Intent(requireActivity(), CameraActivity::class.java))
+                    true
+                }
                 R.id.add_menu2 -> {
                     startActivity(Intent(requireActivity(), AddActivity::class.java))
                     true
