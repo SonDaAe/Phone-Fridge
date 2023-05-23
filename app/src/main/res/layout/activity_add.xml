@@ -73,6 +73,7 @@
             android:layout_width="320dp"
             android:layout_height="50dp"
             android:inputType="number"
+            android:id="@+id/num"
             ></EditText>
     </LinearLayout>
 
@@ -152,6 +153,7 @@
             android:text="냉장/냉동"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="5dp"
+            android:id="@+id/keep"
             ></TextView>
         <Spinner
             android:id="@+id/spinner"

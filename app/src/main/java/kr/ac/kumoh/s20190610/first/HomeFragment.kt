@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.content.Intent
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.PopupMenu
+import android.widget.ListView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,6 +26,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var listView1: ListView
+    private lateinit var adapter: ArrayAdapter<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -39,6 +44,17 @@ class HomeFragment : Fragment(), View.OnClickListener {
         // 버튼을 찾아서 클릭 리스너를 등록합니다.
         val button = view.findViewById<Button>(R.id.button)
         button.setOnClickListener(this)
+
+        listView1 = view.findViewById(R.id.ListView1)
+        adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, mutableListOf())
+        listView1.adapter = adapter
+
+        //아이템 클릭시 삭제
+        listView1.setOnItemClickListener { parent, view, position, id ->
+            val selectedItem = adapter.getItem(position)
+            adapter.remove(selectedItem)
+            adapter.notifyDataSetChanged()
+        }
 
         return view
     }
