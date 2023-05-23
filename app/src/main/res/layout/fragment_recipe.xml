@@ -6,13 +6,9 @@
     tools:context=".RecipeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/listView_custom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:text="Recipe Fragment"
-        />
+        android:layout_height="wrap_content"></ListView>
 
 </FrameLayout>
