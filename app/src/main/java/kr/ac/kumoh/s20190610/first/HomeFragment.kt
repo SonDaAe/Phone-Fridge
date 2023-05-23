@@ -1,15 +1,25 @@
 package kr.ac.kumoh.s20190610.first
 
+import android.Manifest
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.content.Intent
-import android.widget.ArrayAdapter
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
-import android.widget.Button
-import android.widget.PopupMenu
-import android.widget.ListView
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.math.ceil
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,6 +38,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     private lateinit var listView1: ListView
     private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var itemList: ArrayList<String>
+    val REQUEST_IMAGE_CAPTURE_PERMISSION = 1
+    val REQUEST_IMAGE_CAPTURE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,13 +93,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun showPopup() {
-        // 팝업 메뉴를 띄우는 코드를 작성합니다.
+        // 팝업 메뉴를 띄움
         val popupMenu = PopupMenu(requireActivity(), requireView().findViewById(R.id.button))
         popupMenu.inflate(R.menu.add_popup)
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.add_menu1 -> {
-                    startActivity(Intent(requireActivity(), CameraActivity::class.java))
+                    showCameraGalleryOptions()
                     true
                 }
                 R.id.add_menu2 -> {
@@ -99,6 +112,59 @@ class HomeFragment : Fragment(), View.OnClickListener {
         popupMenu.show()
     }
 
+    private fun showCameraGalleryOptions() {
+        val popupMenu = PopupMenu(requireActivity(), requireView().findViewById(R.id.button))
+        popupMenu.inflate(R.menu.popup)
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_menu1-> {
+                    // 갤러리
+                    val gallery = Intent(Intent.ACTION_VIEW, Uri.parse("content://media/internal/images/media")) //갤러리 연결
+                    startActivity(gallery)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.action_menu2 -> {
+                    // 카메라
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        val cameraPermission = Manifest.permission.CAMERA
+                        val permissionGranted = ContextCompat.checkSelfPermission(requireActivity(), cameraPermission) == PackageManager.PERMISSION_GRANTED
+                        if (permissionGranted) {
+                            dispatchTakePictureIntent()
+                        } else {
+                            requestPermissions(arrayOf(cameraPermission), REQUEST_IMAGE_CAPTURE_PERMISSION)
+                        }
+                    }
+                    return@setOnMenuItemClickListener true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
+    }
+
+    private fun dispatchTakePictureIntent() { //카메라 앱 실행
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+    }
+
+    //권한 요청 결과 처리
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_IMAGE_CAPTURE_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent()
+            } else {
+                Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
+            //TODO
+        }
+    }
 
     companion object {
         /**

@@ -1,7 +1,9 @@
 package kr.ac.kumoh.s20190610.first
 
 import android.Manifest
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.ClipData
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -10,16 +12,15 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.PopupMenu
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import org.w3c.dom.Text
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 class AddActivity : AppCompatActivity() {
@@ -102,7 +103,9 @@ class AddActivity : AppCompatActivity() {
         cancel.setOnClickListener {
             finish()
         }
+
     }
+
     private fun checkPermission() {
         var permission = mutableMapOf<String, String>()
         permission["camera"] = Manifest.permission.CAMERA
