@@ -47,6 +47,7 @@
             android:layout_marginLeft="5dp"
             ></TextView>
         <EditText
+            android:privateImeOptions="defaultInputmode=korean"
             android:layout_width="320dp"
             android:layout_height="50dp"
             android:id="@+id/product"
