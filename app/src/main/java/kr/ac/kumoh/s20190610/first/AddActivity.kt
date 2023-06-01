@@ -12,24 +12,49 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.w3c.dom.Text
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 import java.util.*
 
 class AddActivity : AppCompatActivity() {
     val REQUEST_IMAGE_CAPTURE = 1
 
+    private lateinit var registerBtn: Button
+    private lateinit var product: EditText
+    private lateinit var expirationDate: TextView
+    private lateinit var num: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
         checkPermission()
+
+        product = findViewById(R.id.product)
+        expirationDate = findViewById(R.id.expiration_date)
+        num = findViewById(R.id.num)
+
+        registerBtn = findViewById(R.id.register_btn)
+        registerBtn.setOnClickListener {
+            val product = product.text.toString()
+            val expirationDate = expirationDate.text.toString()
+            val num = num.text.toString()
+
+            val intent = Intent()
+            intent.putExtra("product", product)
+            intent.putExtra("expirationDate", expirationDate)
+            intent.putExtra("num", num)
+            setResult(Activity.RESULT_OK, intent)
+
+            // AddActivity 종료
+            finish()
+        }
 
         var calendar = Calendar.getInstance()
         var year = calendar.get(Calendar.YEAR)

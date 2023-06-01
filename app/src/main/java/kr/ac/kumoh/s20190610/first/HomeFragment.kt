@@ -2,6 +2,8 @@ package kr.ac.kumoh.s20190610.first
 
 import android.Manifest
 import android.app.Activity
+import android.content.ClipData
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +13,14 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.math.ceil
-import android.widget.ListView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,11 +37,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var listView1: ListView
-    private lateinit var adapter: ArrayAdapter<String>
-    private lateinit var itemList: ArrayList<String>
     val REQUEST_IMAGE_CAPTURE_PERMISSION = 1
     val REQUEST_IMAGE_CAPTURE = 1
+
+    private lateinit var adapter: MyAdapter
+    private lateinit var recyclerView: RecyclerView
+    private val itemList: ArrayList<MyItem> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,39 +53,34 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // 레이아웃 파일을 inflate하여 View 객체를 생성합니다.
+        // 레이아웃 파일을 inflate하여 View 객체를 생성
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        // 버튼을 찾아서 클릭 리스너를 등록합니다.
+        // 버튼을 찾아서 클릭 리스너를 등록(+ 버튼)
         val button = view.findViewById<Button>(R.id.button)
         button.setOnClickListener(this)
 
-        listView1 = view.findViewById(R.id.ListView1)
-        adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, mutableListOf())
-        listView1.adapter = adapter
-
         //아이템 클릭시 삭제
-        listView1.setOnItemClickListener { parent, view, position, id ->
+        /*listView1.setOnItemClickListener { parent, view, position, id ->
             val selectedItem = adapter.getItem(position)
             adapter.remove(selectedItem)
             adapter.notifyDataSetChanged()
-        }
+        }*/
 
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        recyclerView = requireView().findViewById(R.id.RecyclerView1)
 
-        // 아이디로 버튼 찾아서 클릭 리스너 등록
-        val addButton = view.findViewById<Button>(R.id.button)
+        // 사용자 정의 어댑터로 대체
+        adapter = MyAdapter(itemList)
+        adapter.notifyDataSetChanged()
 
-        /*// Set onClickListener for the button
-        addButton.setOnClickListener {
-            // Start the addActivity
-            val intent = Intent(activity, AddActivity::class.java)
-            startActivity(intent)
-        }*/
+        //RecyclerView 초기화, 어댑터 설정
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
     override fun onClick(v: View?) {
@@ -103,7 +100,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     true
                 }
                 R.id.add_menu2 -> {
-                    startActivity(Intent(requireActivity(), AddActivity::class.java))
+                    startActivityForResult(Intent(requireActivity(), AddActivity::class.java), ADD_ACTIVITY_REQUEST_CODE)
                     true
                 }
                 else -> false
@@ -159,14 +156,28 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
             //TODO
         }
+
+        if (requestCode == ADD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val product = data?.getStringExtra("product")
+            val expirationDate = data?.getStringExtra("expirationDate")
+            val num = data?.getStringExtra("num")
+
+            // 받아온 데이터로 아이템 추가
+            if (product != null && expirationDate != null && num != null) {
+                val newItem = MyItem(product, expirationDate, num)
+                adapter.addItem(newItem)
+            }
+        }
     }
 
     companion object {
+        private const val ADD_ACTIVITY_REQUEST_CODE = 100
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
