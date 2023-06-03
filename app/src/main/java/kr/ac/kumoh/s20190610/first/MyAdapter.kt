@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     private var homeFragment: HomeFragment? = null
@@ -44,5 +46,10 @@ class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapte
 
     fun setHomeFragment(homeFragment: HomeFragment) {
         this.homeFragment = homeFragment
+    }
+
+    fun removeItem(position: Int) {
+        itemList.removeAt(position)
+        notifyItemRemoved(position)
     }
 }

@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
@@ -87,6 +88,25 @@ class HomeFragment : Fragment(), View.OnClickListener {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            //옆으로 밀어 삭제
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                adapter.removeItem(position)
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+
         // 알림 채널 생성, 유통기한 확인하고 알림전송
         createNotificationChannel()
         checkExpirationDates()
@@ -143,7 +163,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         val intent = Intent(requireContext(), ListActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         notificationBuilder.setContentIntent(pendingIntent)
-
 
         val notificationManager = NotificationManagerCompat.from(requireContext())
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
