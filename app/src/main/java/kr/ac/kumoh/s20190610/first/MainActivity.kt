@@ -15,13 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val fadein_animation = AnimationUtils.loadAnimation(this, R.anim.fadein)
-//        val fadeout_animation = AnimationUtils.loadAnimation(this, R.anim.fadeout)
         val rotaanimation = AnimationUtils.loadAnimation(this, R.anim.rotation)
-
-//        val refri = findViewById<ImageView>(R.id.refrigerator)
-
-//        refri.startAnimation(fadeout_animation)
 
         val imageView1 = findViewById<ImageView>(R.id.image_view1)
         val imageView2 = findViewById<ImageView>(R.id.image_view2)
@@ -53,6 +47,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ListActivity::class.java))
             finish()
         }, 3000)
-
     }
 }

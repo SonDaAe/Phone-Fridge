@@ -2,6 +2,9 @@ package kr.ac.kumoh.s20190610.first
 
 import android.Manifest
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ClipData
 import android.content.Context
 import android.os.Bundle
@@ -16,11 +19,18 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,13 +70,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         val button = view.findViewById<Button>(R.id.button)
         button.setOnClickListener(this)
 
-        //아이템 클릭시 삭제
-        /*listView1.setOnItemClickListener { parent, view, position, id ->
-            val selectedItem = adapter.getItem(position)
-            adapter.remove(selectedItem)
-            adapter.notifyDataSetChanged()
-        }*/
-
         return view
     }
 
@@ -78,9 +81,72 @@ class HomeFragment : Fragment(), View.OnClickListener {
         adapter = MyAdapter(itemList)
         adapter.notifyDataSetChanged()
 
+        adapter.setHomeFragment(this)
+
         //RecyclerView 초기화, 어댑터 설정
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // 알림 채널 생성, 유통기한 확인하고 알림전송
+        createNotificationChannel()
+        checkExpirationDates()
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = CHANNEL_DESCRIPTION
+            }
+
+            // 알림 채널을 시스템에 등록
+            val notificationManager =
+                requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    //유통기한 체크
+    fun checkExpirationDates() {
+        val today = Calendar.getInstance() // 현재 날짜와 시간을 가져옴
+        today.set(Calendar.HOUR_OF_DAY, 0)
+
+        val notificationItems = ArrayList<MyItem>()
+
+        for (item in itemList) {
+            val expirationDate = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).parse(item.expirationDate)
+
+            //남은 일수 계산
+            val remainingDays = (expirationDate.time - today.timeInMillis) / (24 * 60 * 60 * 1000)
+            if (remainingDays <= 3L) {
+                notificationItems.add(item)
+            }
+        }
+
+        if (notificationItems.isNotEmpty()) {
+            sendNotification(notificationItems)
+        }
+    }
+
+    private fun sendNotification(items: List<MyItem>) {
+        val notificationBuilder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
+            .setSmallIcon(R.drawable.refrigerator)
+            .setContentTitle("유통기한 알림")
+            .setContentText("유통기한이 얼마 안 남은 상품이 있습니다.")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+
+        // 알림 터치했을 때 메인화면으로
+        val intent = Intent(requireContext(), ListActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        notificationBuilder.setContentIntent(pendingIntent)
+
+
+        val notificationManager = NotificationManagerCompat.from(requireContext())
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
     }
 
     override fun onClick(v: View?) {
@@ -90,7 +156,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun showPopup() {
-        // 팝업 메뉴를 띄움
+        // 팝업 메뉴 띄우기
         val popupMenu = PopupMenu(requireActivity(), requireView().findViewById(R.id.button))
         popupMenu.inflate(R.menu.add_popup)
         popupMenu.setOnMenuItemClickListener { item ->
@@ -178,6 +244,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     companion object {
         private const val ADD_ACTIVITY_REQUEST_CODE = 100
+
+        private const val CHANNEL_ID = "my_channel_id"
+        private const val CHANNEL_NAME = "My Channel"
+        private const val CHANNEL_DESCRIPTION = "My Channel Description"
+        private const val NOTIFICATION_ID = 1
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

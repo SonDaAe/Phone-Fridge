@@ -1,7 +1,5 @@
 package kr.ac.kumoh.s20190610.first
 
-import android.content.ClipData
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+    private var homeFragment: HomeFragment? = null
+
     // ViewHolder 클래스
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productText: TextView = itemView.findViewById(R.id.tv_item_name)
@@ -31,7 +31,6 @@ class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapte
 
     // getItemCount: 아이템 수 반환
     override fun getItemCount(): Int {
-        Log.v("아이템 수", itemList.count().toString())
         return itemList.count()
     }
 
@@ -39,5 +38,11 @@ class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapte
     fun addItem(item: MyItem) {
         itemList.add(item)
         notifyItemInserted(itemList.size - 1)
+
+        homeFragment?.checkExpirationDates()
+    }
+
+    fun setHomeFragment(homeFragment: HomeFragment) {
+        this.homeFragment = homeFragment
     }
 }
