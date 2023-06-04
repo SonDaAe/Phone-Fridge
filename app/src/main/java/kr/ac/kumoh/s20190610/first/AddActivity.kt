@@ -26,9 +26,12 @@ import java.util.*
 class AddActivity : AppCompatActivity() {
     val REQUEST_IMAGE_CAPTURE = 1
 
+    private lateinit var photo: ImageButton
     private lateinit var registerBtn: Button
     private lateinit var product: EditText
+    private lateinit var buyDate: TextView
     private lateinit var expirationDate: TextView
+    private lateinit var storage: Spinner
     private lateinit var num: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +39,11 @@ class AddActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add)
         checkPermission()
 
+        photo = findViewById(R.id.pic_btn)
         product = findViewById(R.id.product)
         expirationDate = findViewById(R.id.expiration_date)
+        buyDate = findViewById(R.id.buy_date)
+        storage = findViewById(R.id.spinner)
         num = findViewById(R.id.num)
 
         registerBtn = findViewById(R.id.register_btn)
@@ -45,11 +51,15 @@ class AddActivity : AppCompatActivity() {
             val product = product.text.toString()
             val expirationDate = expirationDate.text.toString()
             val num = num.text.toString()
+            val buyDate = buyDate.text.toString()
+            val storage = storage.selectedItem.toString()
 
             val intent = Intent()
             intent.putExtra("product", product)
             intent.putExtra("expirationDate", expirationDate)
             intent.putExtra("num", num)
+            intent.putExtra("storage", storage)
+            intent.putExtra("buyDate", buyDate)
             setResult(Activity.RESULT_OK, intent)
 
             // AddActivity 종료

@@ -55,6 +55,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var recyclerView: RecyclerView
     private val itemList: ArrayList<MyItem> = ArrayList()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -66,6 +67,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // 레이아웃 파일을 inflate하여 View 객체를 생성
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerView1)
+        val adapter = MyAdapter(itemList)
+        recyclerView.adapter = adapter
 
         // 버튼을 찾아서 클릭 리스너를 등록(+ 버튼)
         val button = view.findViewById<Button>(R.id.button)
@@ -224,7 +229,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         popupMenu.show()
     }
 
-    private fun dispatchTakePictureIntent() { //카메라 앱 실행
+    private fun dispatchTakePictureIntent()  { //카메라 앱 실행
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
     }
@@ -244,14 +249,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
-            //TODO
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
+            // TODO: 카메라 캡처 완료 후 처리할 내용 작성
         }
 
-        if (requestCode == ADD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val product = data?.getStringExtra("product")
-            val expirationDate = data?.getStringExtra("expirationDate")
-            val num = data?.getStringExtra("num")
+        else if (requestCode == ADD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            val product = data.getStringExtra("product")
+            val expirationDate = data.getStringExtra("expirationDate")
+            val num = data.getStringExtra("num")
 
             // 받아온 데이터로 아이템 추가
             if (product != null && expirationDate != null && num != null) {
@@ -259,10 +264,22 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 adapter.addItem(newItem)
             }
         }
+
+        else if (requestCode == EDIT_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            val updatedCount = data.getIntExtra("updatedCount", 0)
+            val updatedPosition = data.getIntExtra("updatedPosition", -1)
+
+            if (updatedPosition != -1) {
+                val myItem = itemList[updatedPosition]
+                myItem.num = updatedCount.toString()
+                adapter.notifyItemChanged(updatedPosition)
+            }
+        }
     }
 
     companion object {
         private const val ADD_ACTIVITY_REQUEST_CODE = 100
+        const val EDIT_ACTIVITY_REQUEST_CODE = 200
 
         private const val CHANNEL_ID = "my_channel_id"
         private const val CHANNEL_NAME = "My Channel"
