@@ -146,21 +146,25 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
             //남은 일수 계산
             val remainingDays = (expirationDate.time - today.timeInMillis) / (24 * 60 * 60 * 1000)
-            if (remainingDays <= 3L) {
+            if (remainingDays <= 3L && remainingDays >= 1L) {
                 notificationItems.add(item)
+            }
+            else if (remainingDays < 0L) {
+                sendNotification("유통기한이 지난 상품이 있습니다.")
             }
         }
 
         if (notificationItems.isNotEmpty()) {
-            sendNotification(notificationItems)
+            sendNotification("유통기한이 얼마 안 남은 상품이 있습니다.")
+        //sendNotification(notificationItems)
         }
     }
 
-    private fun sendNotification(items: List<MyItem>) {
+    private fun sendNotification(message: String) {
         val notificationBuilder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
             .setSmallIcon(R.drawable.refrigerator)
             .setContentTitle("유통기한 알림")
-            .setContentText("유통기한이 얼마 안 남은 상품이 있습니다.")
+            .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
 
