@@ -166,7 +166,18 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         // 알림 터치했을 때 메인화면으로
         val intent = Intent(requireContext(), ListActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        //val pendingIntent = PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getActivity(
+            requireContext(),
+            0,
+            intent,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                PendingIntent.FLAG_MUTABLE
+            } else {
+                PendingIntent.FLAG_UPDATE_CURRENT
+            }
+        )
+
         notificationBuilder.setContentIntent(pendingIntent)
 
         val notificationManager = NotificationManagerCompat.from(requireContext())

@@ -52,6 +52,8 @@
             android:privateImeOptions="defaultInputmode=korean"
             android:layout_width="320dp"
             android:layout_height="50dp"
+            android:maxLines="1"
+            android:maxLength="13"
             android:id="@+id/product"
             ></EditText>
     </LinearLayout>
