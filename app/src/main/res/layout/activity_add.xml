@@ -108,7 +108,7 @@
         <ImageButton
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/calendar"
+            android:background="@drawable/calendar"
             android:id="@+id/calendar"
             android:padding="0dp"
             android:scaleType="centerCrop"
@@ -142,7 +142,7 @@
         <ImageButton
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/calendar"
+            android:background="@drawable/calendar"
             android:id="@+id/calendar2"
             android:padding="0dp"
             android:scaleType="centerCrop"

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 
 class EditActivity : AppCompatActivity() {
@@ -15,8 +16,8 @@ class EditActivity : AppCompatActivity() {
     private lateinit var count_text: TextView
     private lateinit var edit: Button
     private lateinit var cancel: Button
-    private lateinit var up: Button
-    private lateinit var down: Button
+    private lateinit var up: ImageButton
+    private lateinit var down: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
