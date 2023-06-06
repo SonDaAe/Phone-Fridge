@@ -54,6 +54,11 @@ class AddActivity : AppCompatActivity() {
             val buyDate = buyDate.text.toString()
             val storage = storage.selectedItem.toString()
 
+            if (product.isEmpty() || expirationDate.isEmpty() || num.isEmpty()) {
+                Toast.makeText(this, "상품명, 수량, 유통기한을 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val intent = Intent()
             intent.putExtra("product", product)
             intent.putExtra("expirationDate", expirationDate)
