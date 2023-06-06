@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CameraActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/Layout_Preview"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="구매내역 전체가 보이도록 촬영해주세요."
+            android:textSize="20sp"
+            android:textAlignment="center"/>
+        <androidx.camera.view.PreviewView
+            android:id="@+id/previewView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:orientation="horizontal">
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/camera_button"
+                android:id="@+id/btn_shutter"
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="20dp"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/Layout_Checkview"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="12"
+            android:scaleType="centerInside"
+            android:background="#000000"
+            android:id="@+id/image_View"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="다시 촬영"
+                android:textColor="#FFFFFF"
+                android:textAlignment="center"
+                android:background="#000000"
+                android:id="@+id/btn_cancel"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="확인"
+                android:textColor="#FFFFFF"
+                android:textAlignment="center"
+                android:background="#000000"
+                android:id="@+id/btn_confirm"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+<!--    <androidx.camera.view.PreviewView-->
+<!--        android:id="@+id/previewView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageViewPhoto"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_marginBottom="40dp"-->
+<!--        android:padding="15dp"-->
+<!--        android:src="@drawable/camera_button"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+<!--    <FrameLayout-->
+<!--        android:id="@+id/frameLayoutShutter"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@color/color_1E1E1E"-->
+<!--        android:visibility="gone" />-->
+
+<!--    <FrameLayout-->
+<!--        android:id="@+id/frameLayoutPreview"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:visibility="gone"-->
+<!--        >-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageViewPreview"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@color/color_1E1E1E"-->
+<!--            />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageViewAverage"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:background="@drawable/bg_round_button_a593e0"-->
+<!--            android:padding="10dp"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            android:layout_marginBottom="20dp"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:src="@drawable/ic_average_fffff3" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageViewCancel"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:src="@drawable/ic_cancel_fffff3"-->
+<!--            android:layout_gravity="end"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginEnd="20dp"/>-->
+
+<!--    </FrameLayout>-->
+
+</androidx.appcompat.widget.LinearLayoutCompat>

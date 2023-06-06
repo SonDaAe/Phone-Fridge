@@ -4,10 +4,13 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature
-        android:name="android.hardware.Camera"
+        android:name="android.hardware.camera.any"
         android:required="true" />
 
     <application
@@ -19,11 +22,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.First"
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true"
         tools:targetApi="31">
         <activity
+            android:name=".CameraActivity"
+            android:exported="false" />
+        <activity
             android:name=".EditActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.Dialog"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.Dialog">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

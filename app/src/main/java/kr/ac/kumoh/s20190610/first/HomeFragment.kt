@@ -197,7 +197,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.add_menu1 -> {
-                    showCameraGalleryOptions()
+                    startActivityForResult(Intent(requireActivity(), CameraActivity::class.java), CAMERA_ACTIVITY_REQUEST_CODE)
                     true
                 }
                 R.id.add_menu2 -> {
@@ -260,8 +260,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
-            // TODO: 카메라 캡처 완료 후 처리할 내용 작성
+        if (requestCode == CAMERA_ACTIVITY_REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK && data != null) {
+            val response = data.getStringExtra("RECEIPT_DATA")
         }
 
         else if (requestCode == ADD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
@@ -289,7 +289,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        private const val ADD_ACTIVITY_REQUEST_CODE = 100
+        private const val CAMERA_ACTIVITY_REQUEST_CODE = 100
+        private const val ADD_ACTIVITY_REQUEST_CODE = 101
+
         const val EDIT_ACTIVITY_REQUEST_CODE = 200
 
         private const val CHANNEL_ID = "my_channel_id"
