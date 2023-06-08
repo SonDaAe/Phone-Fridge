@@ -266,6 +266,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA_ACTIVITY_REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK && data != null) {
             val response = data.getStringExtra("RECEIPT_DATA")
+            if (response != null) {
+                Log.d("RESULT_TEST", response)
+            }
         }
 
         else if (requestCode == ADD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {

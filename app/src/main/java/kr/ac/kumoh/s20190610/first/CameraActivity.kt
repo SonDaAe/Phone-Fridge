@@ -2,6 +2,7 @@ package kr.ac.kumoh.s20190610.first
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -46,6 +47,7 @@ import java.io.InputStream
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
+import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Base64
 import java.util.Locale
@@ -275,36 +277,74 @@ class CameraActivity : AppCompatActivity() {
         }
     }
 
-    private fun uriToBase64String(uri: Uri) : String {
-        var bitmap: Bitmap? = null
-        var base64String: String = ""
+    private fun uriToBase64String(imageUri: Uri): String {
+        val contentResolver: ContentResolver = this.contentResolver
+        val inputStream: InputStream = contentResolver.openInputStream(imageUri) ?: return ""
 
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
-            }
-            else {
-                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
+        val bytes = ByteArrayOutputStream()
+        val buffer = ByteArray(1024)
+        var bytesRead: Int
+        while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+            bytes.write(buffer, 0, bytesRead)
         }
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-        val imageBytes: ByteArray = byteArrayOutputStream.toByteArray()
+        val imageBytes = bytes.toByteArray()
+        var base64Image = ""
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                base64String = Base64.getEncoder().encodeToString(imageBytes)
+                base64Image = Base64.getEncoder().encodeToString(imageBytes)
             }
             else {
-                base64String = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT)
+                base64Image = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT)
             }
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
-        return base64String
+        inputStream.close()
+        bytes.close()
+
+
+
+        return base64Image
     }
+
+//    private fun uriToBase64String(uri: Uri) : String {
+//        var bitmap: Bitmap? = null
+//        var base64String: String = ""
+//
+//        try {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//                bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
+//            }
+//            else {
+//                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+//            }
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        }
+//        //val byteArrayOutputStream = ByteArrayOutputStream()
+//        //bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+//        //val imageBytes: ByteArray = byteArrayOutputStream.toByteArray()
+//
+//        Log.d(TAG, "URI OK")
+//        var buffer = ByteBuffer.allocate(bitmap!!.rowBytes * bitmap!!.height)
+//        bitmap.copyPixelsToBuffer(buffer)
+//        var imageBytes = buffer.array()
+//
+//        try {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                base64String = Base64.getEncoder().encodeToString(imageBytes)
+//            }
+//            else {
+//                base64String = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT)
+//            }
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        }
+//        Log.d(TAG, "ENCODED: $base64String")
+//
+//        return base64String
+//    }
 
     private fun postDataToServer(postData: String) {
         val requestBody = RequestBody.create(MediaType.parse("text/plain"), postData)
