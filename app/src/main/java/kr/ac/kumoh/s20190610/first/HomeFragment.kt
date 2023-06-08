@@ -149,6 +149,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
             if (remainingDays <= 3L && remainingDays >= 1L) {
                 notificationItems.add(item)
             }
+            else if (remainingDays == 0L) {
+                sendNotification("유통기한이 오늘까지인 상품이 있습니다.")
+            }
             else if (remainingDays < 0L) {
                 sendNotification("유통기한이 지난 상품이 있습니다.")
             }
@@ -275,10 +278,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
             val product = data.getStringExtra("product")
             val expirationDate = data.getStringExtra("expirationDate")
             val num = data.getStringExtra("num")
+            val type = data.getStringExtra("type")
 
             // 받아온 데이터로 아이템 추가
-            if (product != null && expirationDate != null && num != null) {
-                val newItem = MyItem(product, expirationDate, num)
+            if (type != null && product != null && expirationDate != null && num != null) {
+                val newItem = MyItem(type, product, expirationDate, num)
                 adapter.addItem(newItem)
             }
         }
