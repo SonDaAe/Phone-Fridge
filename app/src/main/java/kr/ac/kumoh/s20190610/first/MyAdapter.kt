@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kr.ac.kumoh.s20190610.first.HomeFragment.Companion.EDIT_ACTIVITY_REQUEST_CODE
@@ -20,6 +21,7 @@ class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapte
 
     // ViewHolder 클래스
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        val type: TextView = itemView.findViewById(R.id.tv_item_type)
         val productText: TextView = itemView.findViewById(R.id.tv_item_name)
         val expirationDateText: TextView = itemView.findViewById(R.id.tv_item_date)
         val numText: TextView = itemView.findViewById(R.id.tv_item_counts)
@@ -32,6 +34,7 @@ class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapte
 
                     val intent = Intent(itemView.context, EditActivity::class.java).apply {
                         putExtra("position", position)
+                        putExtra("type", selectedMyItem.type)
                         putExtra("product", selectedMyItem.product)
                         putExtra("expirationDate", selectedMyItem.expirationDate)
                         putExtra("num", selectedMyItem.num)
@@ -45,7 +48,6 @@ class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapte
 
         fun updateCount(count: String) {
             numText.text = count
-            Log.v("updateCount", "호출")
         }
     }
 
@@ -57,6 +59,7 @@ class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapte
 
     // onBindViewHolder: 뷰홀더에 데이터 바인딩
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.type.text = itemList[position].type
         holder.productText.text = itemList[position].product
         holder.expirationDateText.text = itemList[position].expirationDate
         holder.numText.text = itemList[position].num

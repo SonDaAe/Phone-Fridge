@@ -33,6 +33,7 @@ class AddActivity : AppCompatActivity() {
     private lateinit var expirationDate: TextView
     private lateinit var storage: Spinner
     private lateinit var num: EditText
+    private lateinit var type: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +46,7 @@ class AddActivity : AppCompatActivity() {
         buyDate = findViewById(R.id.buy_date)
         storage = findViewById(R.id.spinner)
         num = findViewById(R.id.num)
+        val type = findViewById<EditText>(R.id.product_type)
 
         registerBtn = findViewById(R.id.register_btn)
         registerBtn.setOnClickListener {
@@ -53,9 +55,10 @@ class AddActivity : AppCompatActivity() {
             val num = num.text.toString()
             val buyDate = buyDate.text.toString()
             val storage = storage.selectedItem.toString()
+            val type = type.text.toString()
 
-            if (product.isEmpty() || expirationDate.isEmpty() || num.isEmpty()) {
-                Toast.makeText(this, "상품명, 수량, 유통기한을 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
+            if (product.isEmpty() || expirationDate.isEmpty() || num.isEmpty() || type.isEmpty()) {
+                Toast.makeText(this, "종류, 상품명, 수량, 유통기한을 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -65,6 +68,7 @@ class AddActivity : AppCompatActivity() {
             intent.putExtra("num", num)
             intent.putExtra("storage", storage)
             intent.putExtra("buyDate", buyDate)
+            intent.putExtra("type", type)
             setResult(Activity.RESULT_OK, intent)
 
             // AddActivity 종료
