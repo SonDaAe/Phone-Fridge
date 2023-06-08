@@ -28,6 +28,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.json.JSONArray
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -267,8 +269,16 @@ class HomeFragment : Fragment(), View.OnClickListener {
         if (requestCode == CAMERA_ACTIVITY_REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK && data != null) {
             val response = data.getStringExtra("RECEIPT_DATA")
             if (response != null) {
-                Log.d("RESULT_TEST", response)
+                val productList : ArrayList<ProductData> = parseJson(response)
+                val intent = Intent(requireActivity(), ReceiptAddActivity::class.java)
+                intent.putExtra("data", productList)
+                startActivityForResult(intent, RECEIPT_ADD_ACTIVITY_REQUEST_CODE)
             }
+
+
+
+
+
         }
 
         else if (requestCode == ADD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
@@ -295,9 +305,33 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    private fun parseJson(jsonString: String): ArrayList<ProductData> {
+        val productList = ArrayList<ProductData>()
+
+        try {
+            val jsonArray = JSONArray(jsonString)
+
+            for (item in 0 until jsonArray.length()) {
+                val jsonObject = jsonArray.getJSONObject(item)
+                val productName = jsonObject.getString("ProductName")
+                val unitPrice = jsonObject.getInt("UnitPrice")
+                val quantity = jsonObject.getInt("Quantity")
+                val price = jsonObject.getInt("Price")
+                val cat = jsonObject.getString("Category")
+                val exp = jsonObject.getInt("Exp")
+
+                productList.add(ProductData(productName, unitPrice, quantity, price, cat, exp))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return productList
+    }
     companion object {
         private const val CAMERA_ACTIVITY_REQUEST_CODE = 100
         private const val ADD_ACTIVITY_REQUEST_CODE = 101
+        private const val RECEIPT_ADD_ACTIVITY_REQUEST_CODE = 102
 
         const val EDIT_ACTIVITY_REQUEST_CODE = 200
 
