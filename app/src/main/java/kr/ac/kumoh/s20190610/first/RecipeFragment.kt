@@ -1,33 +1,19 @@
 package kr.ac.kumoh.s20190610.first
-
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.Volley
+import org.json.JSONArray
+import org.json.JSONException
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [RecipeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class RecipeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,23 +23,47 @@ class RecipeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_recipe, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RecipeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RecipeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Volley 라이브러리를 사용하여 서버에서 데이터 요청
+        val requestQueue = Volley.newRequestQueue(requireContext())
+        val url = "https://recipeexpress.run.goorm.site/Image" // 이미지 데이터를 전송하는 엔드포인트 URL로 변경해야 합니다.
+        val textViewData = view.findViewById<TextView>(R.id.tvData) // XML 레이아웃 파일에 추가한 TextView를 찾습니다.
+
+        val jsonArrayRequest = JsonArrayRequest(
+            Request.Method.GET, url, null,
+            Response.Listener<JSONArray> { response ->
+                try {
+                    // JSON 데이터를 처리하여 원하는 작업 수행
+                    val data = StringBuilder()
+
+                    for (i in 0 until response.length()) {
+                        val jsonObject = response.getJSONObject(i)
+                        val imageId = jsonObject.optInt("recipe_id") // getInt() 대신 optInt() 사용
+                        val imageUrl = jsonObject.optString("ATT_FILE_NO_MAIN") // getString() 대신 optString() 사용
+                        val imageName = jsonObject.optString("RCP_NM") // getString() 대신 optString() 사용
+
+                        // 이미지 데이터를 사용하여 필요한 작업 수행
+
+                        // 데이터를 StringBuilder에 추가
+                        data.append("Image ID: $imageId\n")
+                        data.append("Image URL: $imageUrl\n")
+                        data.append("Image Name: $imageName\n\n")
+                    }
+
+                    // TextView에 데이터 설정
+                    textViewData.text = data.toString()
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
+            },
+            Response.ErrorListener { error ->
+                error.printStackTrace()
             }
+        )
+
+        // 요청을 큐에 추가하여 서버로부터 데이터를 가져옵니다.
+        requestQueue.add(jsonArrayRequest)
     }
 }

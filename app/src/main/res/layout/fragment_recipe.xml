@@ -5,10 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".RecipeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <ListView
-        android:id="@+id/listView_custom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+    <!-- 서버에서 받아온 데이터를 표시할 TextView -->
+    <TextView
+        android:id="@+id/tvData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        />
 
 </FrameLayout>
