@@ -5,7 +5,6 @@ import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ClipData
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,8 +21,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -219,36 +216,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         popupMenu.show()
     }
 
-    private fun showCameraGalleryOptions() {
-        val popupMenu = PopupMenu(requireActivity(), requireView().findViewById(R.id.button))
-        popupMenu.inflate(R.menu.popup)
-        popupMenu.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.action_menu1-> {
-                    // 갤러리
-                    val gallery = Intent(Intent.ACTION_VIEW, Uri.parse("content://media/internal/images/media")) //갤러리 연결
-                    startActivity(gallery)
-                    return@setOnMenuItemClickListener true
-                }
-                R.id.action_menu2 -> {
-                    // 카메라
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        val cameraPermission = Manifest.permission.CAMERA
-                        val permissionGranted = ContextCompat.checkSelfPermission(requireActivity(), cameraPermission) == PackageManager.PERMISSION_GRANTED
-                        if (permissionGranted) {
-                            dispatchTakePictureIntent()
-                        } else {
-                            requestPermissions(arrayOf(cameraPermission), REQUEST_IMAGE_CAPTURE_PERMISSION)
-                        }
-                    }
-                    return@setOnMenuItemClickListener true
-                }
-                else -> false
-            }
-        }
-        popupMenu.show()
-    }
-
     private fun dispatchTakePictureIntent()  { //카메라 앱 실행
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
@@ -273,9 +240,22 @@ class HomeFragment : Fragment(), View.OnClickListener {
             val response = data.getStringExtra("RECEIPT_DATA")
             if (response != null) {
                 val productList : ArrayList<ProductData> = parseJson(response)
-                val intent = Intent(requireActivity(), ReceiptAddActivity::class.java)
-                intent.putExtra("data", productList)
-                startActivityForResult(intent, RECEIPT_ADD_ACTIVITY_REQUEST_CODE)
+
+                val dlg = ReceiptAddActivity(requireActivity() as AppCompatActivity)
+                dlg.show(productList)
+
+                dlg.setOnOKClickedListener { content ->
+
+                    Log.d("RESULT_TEST", content.size.toString())
+
+                    for (i in 0 until content.size) {
+                        val exp = getFutureDate(content[i].exp)
+                        val newItem = MyItem(content[i].category, content[i].productName, exp, content[i].quantity.toString())
+                        adapter.addItem(newItem)
+                    }
+
+                }
+
             }
 
 
@@ -331,6 +311,15 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
 
         return productList
+    }
+
+    private fun getFutureDate(n: Int) : String {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, n)
+        val futureDate = calendar.time
+
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd")
+        return dateFormat.format(futureDate)
     }
     companion object {
         private const val CAMERA_ACTIVITY_REQUEST_CODE = 100

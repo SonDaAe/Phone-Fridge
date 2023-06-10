@@ -17,6 +17,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
@@ -84,6 +86,8 @@ class CameraActivity : AppCompatActivity() {
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        changeColor(R.color.black)
+
         findView()
         permissionCheck()
         setListener()
@@ -132,7 +136,7 @@ class CameraActivity : AppCompatActivity() {
             }
             else {
                 hideCaptureImage()
-                Toast.makeText(this, "오류가 발생하였습니다. 다시 촬영해주세요.", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "오류가 발생하였습니다. 다시 촬영해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -241,9 +245,7 @@ class CameraActivity : AppCompatActivity() {
             }
 
             override fun onAnimationRepeat(animation: Animation?) {
-
             }
-
         }
     }
 
@@ -253,27 +255,20 @@ class CameraActivity : AppCompatActivity() {
             imageCheckView.setImageURI(savedUri)
             return false
         }
-
         return true
-
     }
 
     private fun hideCaptureImage() {
         imageCheckView.setImageURI(null)
         checkLayout.visibility = View.GONE
         previewLayout.visibility = View.VISIBLE
-
-
     }
 
     override fun onBackPressed() {
         if (showCaptureImage()) {
-            Log.d(TAG, "CaptureImage true")
-            hideCaptureImage()
+            finish()
         } else {
-            onBackPressed()
-            Log.d(TAG, "CaptureImage false")
-
+            hideCaptureImage()
         }
     }
 
@@ -308,44 +303,6 @@ class CameraActivity : AppCompatActivity() {
         return base64Image
     }
 
-//    private fun uriToBase64String(uri: Uri) : String {
-//        var bitmap: Bitmap? = null
-//        var base64String: String = ""
-//
-//        try {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-//                bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
-//            }
-//            else {
-//                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-//            }
-//        } catch (e: IOException) {
-//            e.printStackTrace()
-//        }
-//        //val byteArrayOutputStream = ByteArrayOutputStream()
-//        //bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-//        //val imageBytes: ByteArray = byteArrayOutputStream.toByteArray()
-//
-//        Log.d(TAG, "URI OK")
-//        var buffer = ByteBuffer.allocate(bitmap!!.rowBytes * bitmap!!.height)
-//        bitmap.copyPixelsToBuffer(buffer)
-//        var imageBytes = buffer.array()
-//
-//        try {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                base64String = Base64.getEncoder().encodeToString(imageBytes)
-//            }
-//            else {
-//                base64String = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT)
-//            }
-//        } catch (e: IOException) {
-//            e.printStackTrace()
-//        }
-//        Log.d(TAG, "ENCODED: $base64String")
-//
-//        return base64String
-//    }
-
     private fun postDataToServer(postData: String) {
         val requestBody = RequestBody.create(MediaType.parse("text/plain"), postData)
         apis.uploadImage(requestBody).enqueue(object : retrofit2.Callback<ResponseBody> {
@@ -355,7 +312,7 @@ class CameraActivity : AppCompatActivity() {
                     if (responseBody != null) {
                         val resultData = responseBody.string()
                         if (resultData == "[]") {
-                            Toast.makeText(this@CameraActivity, "영수증이 잘 보이도록 다시 촬영해주세요.", Toast.LENGTH_SHORT)
+                            Toast.makeText(this@CameraActivity, "영수증이 잘 보이도록 다시 촬영해주세요.", Toast.LENGTH_SHORT).show()
                             hideCaptureImage()
                         }
                         else {
@@ -367,16 +324,25 @@ class CameraActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    Toast.makeText(this@CameraActivity, "통신 오류가 발생하였습니다. 다시 촬영해주세요.", Toast.LENGTH_SHORT)
+                    Toast.makeText(this@CameraActivity, "통신 오류가 발생하였습니다. 다시 촬영해주세요.", Toast.LENGTH_SHORT).show()
                     hideCaptureImage()
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(this@CameraActivity, "통신 오류가 발생하였습니다. 다시 촬영해주세요.", Toast.LENGTH_SHORT)
+                Toast.makeText(this@CameraActivity, "통신 오류가 발생하였습니다. 다시 촬영해주세요.", Toast.LENGTH_SHORT).show()
                 hideCaptureImage()
             }
         })
+    }
+
+    private fun changeColor(colorResId: Int) {
+        val window: Window = getWindow()
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.statusBarColor = resources.getColor(colorResId, null)
+            window.navigationBarColor = resources.getColor(colorResId, null)
+        }
     }
 
     object PermissionUtil {
