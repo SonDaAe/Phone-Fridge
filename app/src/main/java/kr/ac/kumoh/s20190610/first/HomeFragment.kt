@@ -1,6 +1,5 @@
 package kr.ac.kumoh.s20190610.first
 
-import android.Manifest
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -12,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
@@ -20,16 +18,13 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONArray
-import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
@@ -52,7 +47,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     private lateinit var adapter: MyAdapter
     private lateinit var recyclerView: RecyclerView
-    private val itemList: ArrayList<MyItem> = ArrayList()
+//    private val itemList: ArrayList<MyItem> = ArrayList()
+    private lateinit var itemList: ArrayList<MyItem>
+
+    private lateinit var databaseHelper: DatabaseHelper
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +58,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+        }
+
+        databaseHelper = DatabaseHelper(requireContext())
+        itemList = databaseHelper.getAllProducts()
+
+        for (i in 0 until itemList.size) {
+            Log.d("DB_TEsT", itemList[i].product)
         }
     }
 
@@ -106,7 +111,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
             //옆으로 밀어 삭제
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                adapter.removeItem(position)
+                val id = adapter.removeItem(position)
+                databaseHelper.deleteProduct(id)
             }
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
@@ -250,7 +256,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
                     for (i in 0 until content.size) {
                         val exp = getFutureDate(content[i].exp)
-                        val newItem = MyItem(content[i].category, content[i].productName, exp, content[i].quantity.toString())
+
+
+                        // DB에 아이템 추가
+                        val id = databaseHelper.addProduct(MyItem(-1, content[i].category, content[i].productName, exp, content[i].quantity.toString()))
+                        val newItem = MyItem(id, content[i].category, content[i].productName, exp, content[i].quantity.toString())
                         adapter.addItem(newItem)
                     }
 
@@ -272,7 +282,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
             // 받아온 데이터로 아이템 추가
             if (type != null && product != null && expirationDate != null && num != null) {
-                val newItem = MyItem(type, product, expirationDate, num)
+                val id = databaseHelper.addProduct(MyItem(-1, type, product, expirationDate, num))
+                val newItem = MyItem(id, type, product, expirationDate, num)
                 adapter.addItem(newItem)
             }
         }
@@ -284,6 +295,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             if (updatedPosition != -1) {
                 val myItem = itemList[updatedPosition]
                 myItem.num = updatedCount.toString()
+                databaseHelper.updateProduct(myItem)
                 adapter.notifyItemChanged(updatedPosition)
             }
         }
@@ -349,5 +361,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        databaseHelper.close()
     }
 }

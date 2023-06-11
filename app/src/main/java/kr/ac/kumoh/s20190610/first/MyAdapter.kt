@@ -82,8 +82,11 @@ class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapte
         this.homeFragment = homeFragment
     }
 
-    fun removeItem(position: Int) {
+    fun removeItem(position: Int) : Long {
+        val id = itemList[position].id
         itemList.removeAt(position)
         notifyItemRemoved(position)
+
+        return id
     }
 }

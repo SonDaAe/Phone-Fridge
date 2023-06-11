@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -11,9 +12,27 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var databaseHelper: DatabaseHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        databaseHelper = DatabaseHelper(this)
+
+//        val tdata1 = Product(-1,"name1", "cat", "1", 1)
+//        val tdata2 = Product(-1,"name2", "cat", "1", 1)
+//        val tdata3 = Product(-1,"name3", "cat", "1", 1)
+//        val tdata4 = Product(-1,"name4", "cat", "1", 1)
+//        databaseHelper.addProduct(tdata1)
+//        databaseHelper.addProduct(tdata2)
+//        databaseHelper.addProduct(tdata3)
+//        databaseHelper.addProduct(tdata4)
+
+
+
+
+
+
 
         val rotaanimation = AnimationUtils.loadAnimation(this, R.anim.rotation)
 
@@ -47,5 +66,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ListActivity::class.java))
             finish()
         }, 3000)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        databaseHelper.close()
     }
 }
