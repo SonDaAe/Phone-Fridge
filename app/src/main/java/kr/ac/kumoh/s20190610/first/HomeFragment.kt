@@ -62,10 +62,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         databaseHelper = DatabaseHelper(requireContext())
         itemList = databaseHelper.getAllProducts()
-
-        for (i in 0 until itemList.size) {
-            Log.d("DB_TEsT", itemList[i].product)
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -117,7 +113,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
-        // 알림 채널 생성, 유통기한 확인하고 알림전송
+        // 알림 채널 생성, 유통기한 확인 후 알림 전송
         createNotificationChannel()
         checkExpirationDates()
     }
@@ -251,27 +247,16 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 dlg.show(productList)
 
                 dlg.setOnOKClickedListener { content ->
-
-                    Log.d("RESULT_TEST", content.size.toString())
-
                     for (i in 0 until content.size) {
                         val exp = getFutureDate(content[i].exp)
-
 
                         // DB에 아이템 추가
                         val id = databaseHelper.addProduct(MyItem(-1, content[i].category, content[i].productName, exp, content[i].quantity.toString()))
                         val newItem = MyItem(id, content[i].category, content[i].productName, exp, content[i].quantity.toString())
                         adapter.addItem(newItem)
                     }
-
                 }
-
             }
-
-
-
-
-
         }
 
         else if (requestCode == ADD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {

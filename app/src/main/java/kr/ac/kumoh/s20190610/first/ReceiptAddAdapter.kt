@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.appcompat.widget.AppCompatButton
 import com.google.android.material.internal.TextWatcherAdapter
 import java.util.*
@@ -41,8 +42,8 @@ class ReceiptAddAdapter (val context: Context, val productList: ArrayList<Produc
         val inputCategory = view.findViewById<EditText>(R.id.input_category)
         val inputQuantity = view.findViewById<EditText>(R.id.input_quantity)
         val inputExp = view.findViewById<EditText>(R.id.input_exp)
-        val btn_add_calender = view.findViewById<AppCompatButton>(R.id.btn_add_item_calender)
-        val btn_delete_item = view.findViewById<AppCompatButton>(R.id.btn_item_delete)
+        val btn_add_calender = view.findViewById<ImageButton>(R.id.btn_add_item_calender)
+        val btn_delete_item = view.findViewById<ImageButton>(R.id.btn_item_delete)
 
         val data = productList[position]
 

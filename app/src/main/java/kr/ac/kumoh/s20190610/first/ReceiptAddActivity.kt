@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.content.ContextCompat
 import kr.ac.kumoh.s20190610.first.databinding.ActivityReceiptAddBinding
 
 //class ReceiptAddActivity : AppCompatActivity() {
@@ -72,9 +73,25 @@ class ReceiptAddActivity(private val context : AppCompatActivity) {
         productAddButton.setOnClickListener {
             val addData = ProductData("", 0, 1, 0, "", 7)
             receiptAddAdapter.addItem(addData)
+            receiptAddListView.smoothScrollToPosition(receiptAddAdapter.count - 1)
+        }
+        val window = dlg.window
+        val layoutParams = window?.attributes
+        val displayMetrics = context.resources.displayMetrics
+        val dialogDiffence = (displayMetrics.widthPixels * 0.1).toInt()
+//        val dialogWidth = (displayMetrics.widthPixels * 0.85).toInt() // 화면 너비의 85%
+//        val dialogHeight = (displayMetrics.heightPixels * 0.85).toInt() // 화면 높이의 85%
+        layoutParams?.width = displayMetrics.widthPixels - dialogDiffence
+        layoutParams?.height = displayMetrics.heightPixels - dialogDiffence
+        window?.attributes = layoutParams
+
+        val backgroundDrawable = ContextCompat.getDrawable(context, R.drawable.dialog_rounded_bg)
+
+        dlg.window!!.apply {
+            setBackgroundDrawable(backgroundDrawable)
+            //setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
         }
 
-        dlg.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
         dlg.setCanceledOnTouchOutside(true)
         dlg.setCancelable(false)
 

@@ -4,6 +4,10 @@
     android:background="#FFFFFF"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="40dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="20dp"
     android:orientation="vertical"
     tools:context=".ReceiptAddActivity">
     <TextView
@@ -12,39 +16,55 @@
         android:layout_weight="1"
         android:text="상품 등록"
         android:textSize="20sp"
-        android:textColor="#00FF00" />
+        android:paddingLeft="5dp"
+        android:textStyle="bold"
+        android:textColor="#000000" />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="7"
+        android:layout_weight="10"
+        android:divider="@null"
+        android:dividerHeight="6dp"
         android:id="@+id/receipt_add_listview"/>
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:id="@+id/btn_product_add"
-        android:text="상품 추가하기"
-        android:textSize="20sp" />
+        android:text="+ 상품 추가하기"
+        android:background="@null"
+        android:textSize="18sp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:id="@+id/btn_linear_layout"
         android:orientation="horizontal">
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:id="@+id/add_btn_cancel"
-            android:text="취소"
-            android:textSize="20sp"/>
+            android:text="취 소"
+            android:background="@drawable/button_gray"
+            android:elevation="0dp"
+            android:textSize="18sp"/>
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
             android:id="@+id/add_btn_register"
-            android:text="등록"
-            android:textSize="20sp"/>
+            android:text="등 록"
+            android:textColor="#000000"
+            android:background="@drawable/button_purple"
+            android:elevation="0dp"
+            android:textSize="18sp"/>
 
     </LinearLayout>
 </LinearLayout>

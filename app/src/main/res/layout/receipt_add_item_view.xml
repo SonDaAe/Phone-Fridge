@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="80dp"
+    android:layout_marginTop="5dp"
     android:orientation="horizontal">
     <LinearLayout
         android:layout_width="0dp"
@@ -13,15 +14,17 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/input_name"
+            android:padding="5dp"
             android:hint="상품명을 입력해 주세요."
-            android:textSize="10sp" />
+            android:background="@drawable/receipt_add_item_border" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/input_category"
+            android:padding="5dp"
             android:hint="품목을 입력해 주세요."
-            android:textSize="10sp" />
+            android:background="@drawable/receipt_add_item_border" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -30,30 +33,51 @@
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="4"
+                android:layout_weight="1"
+                android:hint="수량"
+                android:padding="5dp"
+                android:background="@drawable/receipt_add_item_border"
                 android:inputType="numberSigned"
                 android:id="@+id/input_quantity"/>
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:inputType="number"
-                android:id="@+id/input_exp"/>
-            <androidx.appcompat.widget.AppCompatButton
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/btn_add_item_calender" />
-
+                android:orientation="horizontal"
+                android:background="@drawable/receipt_add_item_border">
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:inputType="number"
+                    android:hint="남은 유통기한"
+                    android:background="@null"
+                    android:padding="5dp"
+                    android:id="@+id/input_exp"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageButton
+                        android:layout_width="21dp"
+                        android:layout_height="18dp"
+                        android:background="@drawable/calender2"
+                        android:id="@+id/btn_add_item_calender" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1">
-        <androidx.appcompat.widget.AppCompatButton
+        android:layout_weight="1"
+        android:gravity="center">
+        <ImageButton
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:background="@drawable/trash"
             android:id="@+id/btn_item_delete"
             android:gravity="center_vertical" />
     </LinearLayout>

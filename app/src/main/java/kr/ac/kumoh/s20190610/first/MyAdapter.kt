@@ -21,7 +21,7 @@ class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapte
 
     // ViewHolder 클래스
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val type: TextView = itemView.findViewById(R.id.tv_item_type)
+        //val type: TextView = itemView.findViewById(R.id.tv_item_type)
         val productText: TextView = itemView.findViewById(R.id.tv_item_name)
         val expirationDateText: TextView = itemView.findViewById(R.id.tv_item_date)
         val numText: TextView = itemView.findViewById(R.id.tv_item_counts)
@@ -59,7 +59,7 @@ class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapte
 
     // onBindViewHolder: 뷰홀더에 데이터 바인딩
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.type.text = itemList[position].type
+        //holder.type.text = itemList[position].type
         holder.productText.text = itemList[position].product
         holder.expirationDateText.text = itemList[position].expirationDate
         holder.numText.text = itemList[position].num
