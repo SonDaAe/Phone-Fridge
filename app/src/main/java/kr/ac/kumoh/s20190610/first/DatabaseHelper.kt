@@ -77,7 +77,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "database.db"
                 val exp = cursor.getString(expIndex)
                 val quantity = cursor.getString(quantityIndex)
 
-                val product = MyItem(id, productName, category, exp, quantity)
+                val product = MyItem(id, category, productName, exp, quantity)
                 productList.add(product)
             } while (cursor.moveToNext())
         }

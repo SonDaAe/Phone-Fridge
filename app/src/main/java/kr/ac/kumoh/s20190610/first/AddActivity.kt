@@ -42,7 +42,7 @@ class AddActivity : AppCompatActivity() {
         photo = findViewById(R.id.pic_btn)
         product = findViewById(R.id.product)
         expirationDate = findViewById(R.id.expiration_date)
-        storage = findViewById(R.id.spinner)
+        //storage = findViewById(R.id.spinner)
         num = findViewById(R.id.num)
         val type = findViewById<EditText>(R.id.product_type)
 
@@ -51,7 +51,7 @@ class AddActivity : AppCompatActivity() {
             val product = product.text.toString()
             val expirationDate = expirationDate.text.toString()
             val num = num.text.toString()
-            val storage = storage.selectedItem.toString()
+            //val storage = storage.selectedItem.toString()
             val type = type.text.toString()
 
             if (product.isEmpty() || expirationDate.isEmpty() || num.isEmpty() || type.isEmpty()) {
@@ -63,7 +63,7 @@ class AddActivity : AppCompatActivity() {
             intent.putExtra("product", product)
             intent.putExtra("expirationDate", expirationDate)
             intent.putExtra("num", num)
-            intent.putExtra("storage", storage)
+            //intent.putExtra("storage", storage)
             intent.putExtra("type", type)
             setResult(Activity.RESULT_OK, intent)
 
