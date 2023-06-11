@@ -18,7 +18,7 @@
             android:layout_weight="1"
             android:text="구매내역 전체가 보이도록 촬영해주세요."
             android:gravity="center"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textColor="#FFFFFF"
             android:textAlignment="center"/>
         <androidx.camera.view.PreviewView

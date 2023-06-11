@@ -29,7 +29,6 @@ class AddActivity : AppCompatActivity() {
     private lateinit var photo: ImageButton
     private lateinit var registerBtn: Button
     private lateinit var product: EditText
-    private lateinit var buyDate: TextView
     private lateinit var expirationDate: TextView
     private lateinit var storage: Spinner
     private lateinit var num: EditText
@@ -43,7 +42,6 @@ class AddActivity : AppCompatActivity() {
         photo = findViewById(R.id.pic_btn)
         product = findViewById(R.id.product)
         expirationDate = findViewById(R.id.expiration_date)
-        buyDate = findViewById(R.id.buy_date)
         storage = findViewById(R.id.spinner)
         num = findViewById(R.id.num)
         val type = findViewById<EditText>(R.id.product_type)
@@ -53,7 +51,6 @@ class AddActivity : AppCompatActivity() {
             val product = product.text.toString()
             val expirationDate = expirationDate.text.toString()
             val num = num.text.toString()
-            val buyDate = buyDate.text.toString()
             val storage = storage.selectedItem.toString()
             val type = type.text.toString()
 
@@ -67,7 +64,6 @@ class AddActivity : AppCompatActivity() {
             intent.putExtra("expirationDate", expirationDate)
             intent.putExtra("num", num)
             intent.putExtra("storage", storage)
-            intent.putExtra("buyDate", buyDate)
             intent.putExtra("type", type)
             setResult(Activity.RESULT_OK, intent)
 
@@ -83,23 +79,8 @@ class AddActivity : AppCompatActivity() {
         var option = findViewById<ImageButton>(R.id.pic_btn)
         var cancel = findViewById<Button>(R.id.cancel_btn)
 
-        var cal_btn = findViewById<ImageButton>(R.id.calendar)
         var cal_btn2 = findViewById<ImageButton>(R.id.calendar2)
-        var buy_date = findViewById<TextView>(R.id.buy_date)
         var expi_date = findViewById<TextView>(R.id.expiration_date)
-
-        cal_btn.setOnClickListener { //구매일자 표시
-            val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
-                val calendar = Calendar.getInstance()
-                calendar.set(year, month, day)
-
-                val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-                val formattedDate = dateFormat.format(calendar.time)
-
-                buy_date.text = formattedDate
-            }, year, month, day)
-            datePickerDialog.show()
-        }
 
         cal_btn2.setOnClickListener { //유통기한 표시
             val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->

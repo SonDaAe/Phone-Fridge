@@ -7,11 +7,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-    <androidx.appcompat.widget.SearchView
+    <!-- <androidx.appcompat.widget.SearchView
         android:id="@+id/SearchView1"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        app:iconifiedByDefault="false" />
+        app:iconifiedByDefault="false" /> -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerView1"
