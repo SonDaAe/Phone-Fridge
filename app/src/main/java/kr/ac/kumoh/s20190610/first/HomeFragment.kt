@@ -115,7 +115,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         // 알림 채널 생성, 유통기한 확인 후 알림 전송
         createNotificationChannel()
-        checkExpirationDates()
+        //checkExpirationDates()
     }
 
     private fun createNotificationChannel() {
@@ -254,6 +254,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                         val id = databaseHelper.addProduct(MyItem(-1, content[i].category, content[i].productName, exp, content[i].quantity.toString()))
                         val newItem = MyItem(id, content[i].category, content[i].productName, exp, content[i].quantity.toString())
                         adapter.addItem(newItem)
+                        checkExpirationDates()
                     }
                 }
             }
@@ -270,6 +271,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 val id = databaseHelper.addProduct(MyItem(-1, type, product, expirationDate, num))
                 val newItem = MyItem(id, type, product, expirationDate, num)
                 adapter.addItem(newItem)
+                checkExpirationDates()
             }
         }
 
