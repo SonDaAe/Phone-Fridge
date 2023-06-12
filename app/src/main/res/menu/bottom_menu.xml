@@ -16,4 +16,12 @@
         android:title="레시피"
         app:showAsAction="always"
         />
+
+    <item
+        android:id="@+id/recommend"
+        android:enabled="true"
+        android:icon="@drawable/recommend"
+        android:title="추천"
+        app:showAsAction="always"
+        />
 </menu>
