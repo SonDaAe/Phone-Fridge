@@ -98,12 +98,7 @@ class ReceiptAddAdapter (val context: Context, val productList: ArrayList<Produc
 
             override fun afterTextChanged(p0: Editable?) {
                 val quantity = p0.toString()
-                if (quantity == "-" || quantity == "") {
-                    productList[position].quantity = 0
-                }
-                else {
-                    productList[position].quantity = quantity.toInt()
-                }
+                productList[position].quantity = quantity.toInt()
             }
 
         })
@@ -125,7 +120,6 @@ class ReceiptAddAdapter (val context: Context, val productList: ArrayList<Produc
                 else {
                     productList[position].exp = exp.toInt()
                 }
-                Log.d("TC_TEST", exp)
             }
         })
 

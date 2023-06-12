@@ -15,6 +15,8 @@ class ListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
+        //supportActionBar?.setDisplayShowTitleEnabled(false)
+
         supportFragmentManager.beginTransaction()
             .replace(R.id.contaiers, HomeFragment())
             .commit()

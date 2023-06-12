@@ -6,14 +6,12 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
@@ -247,7 +245,10 @@ class HomeFragment : Fragment(), View.OnClickListener, MyAdapter.OnClickListener
         when (v?.id) {
             R.id.button -> showPopup()
         }
+
+
     }
+
 
     private fun showPopup() {
         // 팝업 메뉴 띄우기
@@ -365,10 +366,14 @@ class HomeFragment : Fragment(), View.OnClickListener, MyAdapter.OnClickListener
                 val jsonObject = jsonArray.getJSONObject(item)
                 val productName = jsonObject.getString("ProductName")
                 val unitPrice = jsonObject.getInt("UnitPrice")
-                val quantity = jsonObject.getInt("Quantity")
+                var quantity = jsonObject.getInt("Quantity")
                 val price = jsonObject.getInt("Price")
                 val cat = jsonObject.getString("Category")
                 val exp = jsonObject.getInt("Exp")
+
+                if (quantity < 1) {
+                    quantity = 1
+                }
 
                 productList.add(ProductData(productName, unitPrice, quantity, price, cat, exp))
             }

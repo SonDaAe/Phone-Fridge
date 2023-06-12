@@ -7,11 +7,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-    <!-- <androidx.appcompat.widget.SearchView
-        android:id="@+id/SearchView1"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        app:iconifiedByDefault="false" /> -->
+
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:background="@color/purple_700"-->
+<!--        app:navigationIcon="@drawable/ic_burger">-->
+<!--        <EditText-->
+<!--            android:layout_width="250dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:hint="검색..."-->
+<!--            android:textColorHint="#FFFFFF"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:background="@null"-->
+<!--            android:maxLength="1"-->
+<!--            android:textSize="20sp"-->
+<!--            android:id="@+id/text_search"-->
+<!--            android:visibility="gone"/>-->
+<!--        <ImageButton-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginRight="10dp"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:id="@+id/btn_search"-->
+<!--            android:background="@drawable/ic_search"/>-->
+<!--    </androidx.appcompat.widget.Toolbar>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerView1"

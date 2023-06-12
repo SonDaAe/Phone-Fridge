@@ -39,6 +39,8 @@ class AddActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add)
         checkPermission()
 
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
         val edit = intent.getIntExtra("edit", -1)
 
         photo = findViewById(R.id.pic_btn)
