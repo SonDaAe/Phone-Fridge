@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -37,7 +38,9 @@ class RecipeFragment : Fragment() {
         adapter = RecipeAdapter()
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         recyclerView.adapter = adapter
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         // Volley 라이브러리를 사용하여 서버에서 데이터 요청
         val requestQueue = Volley.newRequestQueue(requireContext())
