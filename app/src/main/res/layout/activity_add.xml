@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:padding="10dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="5dp"
         android:orientation="horizontal">
         <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@android:drawable/ic_menu_camera"
             android:layout_gravity="center"
             android:id="@+id/pic_btn"
@@ -25,63 +25,85 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
+            android:paddingLeft="5dp"
             android:layout_gravity="left">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="상품명"
-                android:textSize="10sp"
+                android:textSize="13sp"
+                android:gravity="center_vertical"
                 android:textColor="#000000" />
+
             <EditText
+                android:id="@+id/product"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:background="@drawable/bottom_border"
                 android:maxLines="1"
-                android:hint="상품명"
-                android:id="@+id/product" />
+                android:layout_marginBottom="5dp"
+                android:gravity="center_vertical"
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="5dp"
+        android:paddingLeft="5dp"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="종류"
-            android:textSize="10dp"
+            android:textSize="13sp"
+            android:gravity="center_vertical"
             android:textColor="#000000" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/bottom_border"
             android:id="@+id/product_type" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="5dp"
+        android:paddingLeft="5dp"
         android:orientation="horizontal">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:layout_marginRight="5dp"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="수량"
-                android:textSize="10sp"
+                android:gravity="center_vertical"
+                android:textSize="13sp"
                 android:textColor="#000000"/>
+
             <EditText
+                android:id="@+id/num"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bottom_border"
+                android:gravity="center_vertical"
                 android:inputType="number"
-                android:id="@+id/num"
-                ></EditText>
+                android:textSize="16sp"></EditText>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -93,22 +115,28 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="유통기한"
-                android:textSize="10sp"
+                android:textSize="13sp"
+                android:gravity="center_vertical"
                 android:textColor="#000000" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bottom_border"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical"
                     android:id="@+id/expiration_date" />
                 <ImageButton
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/calendar"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:background="@drawable/calendar2"
                     android:id="@+id/calendar2"
                     android:scaleType="centerInside" />
             </LinearLayout>
