@@ -115,7 +115,8 @@ class HomeFragment : Fragment(), View.OnClickListener, MyAdapter.OnClickListener
 
         // 알림 채널 생성, 유통기한 확인 후 알림 전송
         createNotificationChannel()
-        //checkExpirationDates()
+
+        sendNotificationOnDateChange()
     }
 
     override fun minusButtonClickListener(item: MyItem, pos: Int) {
@@ -195,7 +196,6 @@ class HomeFragment : Fragment(), View.OnClickListener, MyAdapter.OnClickListener
 
         if (notificationItems.isNotEmpty()) {
             sendNotification("유통기한이 얼마 안 남은 상품이 있습니다.")
-        //sendNotification(notificationItems)
         }
     }
 
@@ -225,6 +225,22 @@ class HomeFragment : Fragment(), View.OnClickListener, MyAdapter.OnClickListener
 
         val notificationManager = NotificationManagerCompat.from(requireContext())
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
+    }
+
+    private fun sendNotificationOnDateChange() {
+        val calendar = Calendar.getInstance()
+        val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+        // 앱이 전에 실행되었다면 이전에 저장된 마지막 날짜가져옴
+        val sharedPreferences = requireContext().getSharedPreferences("MyApp", Context.MODE_PRIVATE)
+        val lastDay = sharedPreferences.getInt("LastDay", -1)
+
+        if (lastDay != currentDay) {
+            // 새로운 날짜에 앱이 실행되었음을 저장
+            sharedPreferences.edit().putInt("LastDay", currentDay).apply()
+
+            checkExpirationDates()
+        }
     }
 
     override fun onClick(v: View?) {
