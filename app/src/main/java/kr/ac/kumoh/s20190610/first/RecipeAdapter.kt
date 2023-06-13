@@ -1,5 +1,7 @@
 package kr.ac.kumoh.s20190610.first
 
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +11,33 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kr.ac.kumoh.s20190610.first.RecipeAdapter.RecipeViewHolder
 
-data class Recipe(val imageId: Int, val imageUrl: String, val imageName : String)
+data class Recipe(val imageId: Int, val imageUrl: String, val imageName : String): Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readString().toString(),
+        parcel.readString().toString()
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(imageId)
+        parcel.writeString(imageUrl)
+        parcel.writeString(imageName)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Recipe> {
+        override fun createFromParcel(parcel: Parcel): Recipe {
+            return Recipe(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Recipe?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
 
 class RecipeAdapter : RecyclerView.Adapter<RecipeViewHolder>() {
 
@@ -33,6 +61,10 @@ class RecipeAdapter : RecyclerView.Adapter<RecipeViewHolder>() {
 
     override fun getItemCount(): Int {
         return recipes.size
+    }
+
+    fun getItem(position: Int): Recipe {
+        return recipes[position]
     }
 
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

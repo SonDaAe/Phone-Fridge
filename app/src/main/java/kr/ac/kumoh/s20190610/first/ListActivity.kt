@@ -11,6 +11,7 @@ class ListActivity : AppCompatActivity() {
     val homeFragment = HomeFragment()
     val recipeFragment = RecipeFragment()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
