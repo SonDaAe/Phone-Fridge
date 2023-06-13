@@ -26,6 +26,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -58,6 +59,8 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity() {
+    private val PICK_IMAGE_REQUEST = 1000
+
     private lateinit var binding: ActivityCameraBinding
     val apis = APIs.create()
 
@@ -79,6 +82,8 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var imageCheckView: ImageView
     private lateinit var cancelButton: Button
     private lateinit var confirmButton: Button
+    private lateinit var shotCancelButton: AppCompatButton
+    private lateinit var galleryButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,6 +123,8 @@ class CameraActivity : AppCompatActivity() {
         imageCheckView = binding.imageView
         cancelButton = binding.btnCancel
         confirmButton = binding.btnConfirm
+        shotCancelButton = binding.btnCancelShot
+        galleryButton = binding.btnGallery
     }
 
     private fun setListener() {
@@ -127,6 +134,14 @@ class CameraActivity : AppCompatActivity() {
 
         cancelButton.setOnClickListener {
             hideCaptureImage()
+        }
+
+        shotCancelButton.setOnClickListener {
+            onBackPressed()
+        }
+
+        galleryButton.setOnClickListener {
+            openGallery()
         }
 
         confirmButton.setOnClickListener {
@@ -140,6 +155,23 @@ class CameraActivity : AppCompatActivity() {
             }
         }
 
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            savedUri = data.data
+
+            previewLayout.visibility = View.GONE
+            showCaptureImage()
+        }
+    }
+
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
     override fun onRequestPermissionsResult(
@@ -200,6 +232,13 @@ class CameraActivity : AppCompatActivity() {
     private fun savePhoto() {
         imageCapture = imageCapture ?: return
 
+        val animation =
+            AnimationUtils.loadAnimation(this@CameraActivity, R.anim.camera_shutter)
+        animation.setAnimationListener(cameraAnimationListener)
+        shutterButton.animation = animation
+        shutterButton.visibility = View.VISIBLE
+        shutterButton.startAnimation(animation)
+
         val photoFile = File(
             outputDirectory,
             SimpleDateFormat("yymmdd-HHmmss", Locale.US).format(System.currentTimeMillis()) + ".png"
@@ -214,12 +253,8 @@ class CameraActivity : AppCompatActivity() {
                     savedUri = Uri.fromFile(photoFile)
                     Log.d(TAG, "savedUri : $savedUri")
 
-                    val animation =
-                        AnimationUtils.loadAnimation(this@CameraActivity, R.anim.camera_shutter)
-                    animation.setAnimationListener(cameraAnimationListener)
-                    shutterButton.animation = animation
-                    shutterButton.visibility = View.VISIBLE
-                    shutterButton.startAnimation(animation)
+                    previewLayout.visibility = View.GONE
+                    showCaptureImage()
 
 
                     Log.d(TAG, "imageCapture")
@@ -240,8 +275,7 @@ class CameraActivity : AppCompatActivity() {
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-                previewLayout.visibility = View.GONE
-                showCaptureImage()
+
             }
 
             override fun onAnimationRepeat(animation: Animation?) {

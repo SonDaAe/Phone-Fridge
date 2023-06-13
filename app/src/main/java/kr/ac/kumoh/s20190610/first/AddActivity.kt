@@ -30,29 +30,51 @@ class AddActivity : AppCompatActivity() {
     private lateinit var registerBtn: Button
     private lateinit var product: EditText
     private lateinit var expirationDate: TextView
+    private lateinit var type: EditText
     private lateinit var storage: Spinner
     private lateinit var num: EditText
-    private lateinit var type: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
         checkPermission()
 
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        val edit = intent.getIntExtra("edit", -1)
+
         photo = findViewById(R.id.pic_btn)
         product = findViewById(R.id.product)
         expirationDate = findViewById(R.id.expiration_date)
-        //storage = findViewById(R.id.spinner)
         num = findViewById(R.id.num)
-        val type = findViewById<EditText>(R.id.product_type)
+        type = findViewById(R.id.product_type)
+
+        val id : Long
+        val pos : Int
+
+        if (edit == 1) {
+            product.setText(intent.getStringExtra("name"))
+            expirationDate.setText(intent.getStringExtra("exp"))
+            num.setText(intent.getStringExtra("num"))
+            type.setText(intent.getStringExtra("type"))
+            id = intent.getLongExtra("id", -1)
+            pos = intent.getIntExtra("pos", -1)
+
+            Log.d("EDIT_TEST_INPUT", id.toString())
+            Log.d("EDIT_TEST_INPUT", pos.toString())
+        }
+        else {
+            id = -1
+            pos = -1
+        }
 
         registerBtn = findViewById(R.id.register_btn)
         registerBtn.setOnClickListener {
             val product = product.text.toString()
             val expirationDate = expirationDate.text.toString()
             val num = num.text.toString()
-            //val storage = storage.selectedItem.toString()
             val type = type.text.toString()
+
 
             if (product.isEmpty() || expirationDate.isEmpty() || num.isEmpty() || type.isEmpty()) {
                 Toast.makeText(this, "종류, 상품명, 수량, 유통기한을 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
@@ -60,10 +82,12 @@ class AddActivity : AppCompatActivity() {
             }
 
             val intent = Intent()
+            intent.putExtra("id", id)
+            intent.putExtra("pos", pos)
+            intent.putExtra("edit", edit)
             intent.putExtra("product", product)
             intent.putExtra("expirationDate", expirationDate)
             intent.putExtra("num", num)
-            //intent.putExtra("storage", storage)
             intent.putExtra("type", type)
             setResult(Activity.RESULT_OK, intent)
 

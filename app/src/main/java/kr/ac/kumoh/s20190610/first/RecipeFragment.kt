@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -30,7 +31,9 @@ class RecipeFragment : Fragment() {
         adapter = RecipeAdapter()
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         recyclerView.adapter = adapter
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         val requestQueue = Volley.newRequestQueue(requireContext())
         val url = "https://recipeexpress.run.goorm.site/Image"

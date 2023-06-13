@@ -7,17 +7,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kr.ac.kumoh.s20190610.first.HomeFragment.Companion.EDIT_ACTIVITY_REQUEST_CODE
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class MyAdapter(val itemList: ArrayList<MyItem>, private val listener: OnClickListener) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     companion object {
         const val EDIT_ACTIVITY_REQUEST_CODE = 200
     }
     private var homeFragment: HomeFragment? = null
+
+    interface OnClickListener {
+        fun minusButtonClickListener(item: MyItem, pos: Int)
+        fun plusButtonClickListener(item: MyItem, pos: Int)
+
+        fun thumbnailOnClickListenr(item: MyItem, pos: Int)
+        fun deatilOnClickListener(item: MyItem, pos: Int)
+    }
 
     // ViewHolder 클래스
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -25,23 +36,44 @@ class MyAdapter(val itemList: ArrayList<MyItem>) : RecyclerView.Adapter<MyAdapte
         val productText: TextView = itemView.findViewById(R.id.tv_item_name)
         val expirationDateText: TextView = itemView.findViewById(R.id.tv_item_date)
         val numText: TextView = itemView.findViewById(R.id.tv_item_counts)
+        private val minusButton: ImageButton = itemView.findViewById(R.id.btn_minus)
+        private val plusButton: ImageButton = itemView.findViewById(R.id.btn_plus)
+        private val detailLayout: LinearLayout = itemView.findViewById(R.id.detail_area_layout)
+        private val thumbnailView: ImageView = itemView.findViewById(R.id.thumbnail)
 
         init {
-            itemView.setOnClickListener {
+            minusButton.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val selectedMyItem = itemList[position]
+                    val selectedItem = itemList[position]
 
-                    val intent = Intent(itemView.context, EditActivity::class.java).apply {
-                        putExtra("position", position)
-                        putExtra("type", selectedMyItem.type)
-                        putExtra("product", selectedMyItem.product)
-                        putExtra("expirationDate", selectedMyItem.expirationDate)
-                        putExtra("num", selectedMyItem.num)
-                        putExtra("updatedCount", selectedMyItem.updatedCount)
+                    if (selectedItem.num.toInt() > 1) {
+                        listener.minusButtonClickListener(selectedItem, position)
                     }
-                    //itemView.context.startActivity(intent)
-                    homeFragment?.startActivityForResult(intent, EDIT_ACTIVITY_REQUEST_CODE)
+                }
+            }
+
+            plusButton.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val selectedItem = itemList[position]
+                    listener.plusButtonClickListener(selectedItem, position)
+                }
+            }
+
+            detailLayout.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val selectedItem = itemList[position]
+                    listener.deatilOnClickListener(selectedItem, position)
+                }
+            }
+
+            thumbnailView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val selectedItem = itemList[position]
+                    listener.thumbnailOnClickListenr(selectedItem, position)
                 }
             }
         }

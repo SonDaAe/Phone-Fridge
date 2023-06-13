@@ -6,14 +6,12 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
@@ -37,7 +35,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HomeFragment : Fragment(), View.OnClickListener {
+class HomeFragment : Fragment(), View.OnClickListener, MyAdapter.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -69,7 +67,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerView1)
-        val adapter = MyAdapter(itemList)
+        val adapter = MyAdapter(itemList, this)
         recyclerView.adapter = adapter
 
         // 버튼을 찾아서 클릭 리스너를 등록(+ 버튼)
@@ -84,7 +82,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         recyclerView = requireView().findViewById(R.id.RecyclerView1)
 
         // 사용자 정의 어댑터로 대체
-        adapter = MyAdapter(itemList)
+        adapter = MyAdapter(itemList, this)
         adapter.notifyDataSetChanged()
 
         adapter.setHomeFragment(this)
@@ -117,6 +115,41 @@ class HomeFragment : Fragment(), View.OnClickListener {
         createNotificationChannel()
 
         sendNotificationOnDateChange()
+    }
+
+    override fun minusButtonClickListener(item: MyItem, pos: Int) {
+        val newNum = item.num.toInt() - 1
+        item.num = newNum.toString()
+        databaseHelper.updateProduct(item)
+        adapter.notifyItemChanged(pos)
+    }
+
+    override fun plusButtonClickListener(item: MyItem, pos: Int) {
+        val newNum = item.num.toInt() + 1
+        item.num = newNum.toString()
+        databaseHelper.updateProduct(item)
+        adapter.notifyItemChanged(pos)
+    }
+
+    override fun deatilOnClickListener(item: MyItem, pos: Int) {
+        startAddActivityForEdit(item, pos)
+    }
+
+    override fun thumbnailOnClickListenr(item: MyItem, pos: Int) {
+        startAddActivityForEdit(item, pos)
+    }
+
+    private fun startAddActivityForEdit(item: MyItem, pos: Int) {
+        val intent = Intent(requireActivity(), AddActivity::class.java)
+        intent.putExtra("edit", 1)
+        intent.putExtra("name", item.product)
+        intent.putExtra("type", item.type)
+        intent.putExtra("num", item.num)
+        intent.putExtra("exp", item.expirationDate)
+        intent.putExtra("id", item.id)
+        Log.d("EDIT_TEST_INPUT", item.id.toString())
+        intent.putExtra("pos", pos)
+        startActivityForResult(intent, ADD_ACTIVITY_REQUEST_CODE)
     }
 
     private fun createNotificationChannel() {
@@ -212,7 +245,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.button -> showPopup()
         }
+
+
     }
+
 
     private fun showPopup() {
         // 팝업 메뉴 띄우기
@@ -225,7 +261,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     true
                 }
                 R.id.add_menu2 -> {
-                    startActivityForResult(Intent(requireActivity(), AddActivity::class.java), ADD_ACTIVITY_REQUEST_CODE)
+                    val intent = Intent(requireActivity(), AddActivity::class.java)
+                    intent.putExtra("edit", 0)
+                    startActivityForResult(intent, ADD_ACTIVITY_REQUEST_CODE)
                     true
                 }
                 else -> false
@@ -281,13 +319,27 @@ class HomeFragment : Fragment(), View.OnClickListener {
             val expirationDate = data.getStringExtra("expirationDate")
             val num = data.getStringExtra("num")
             val type = data.getStringExtra("type")
+            val edit = data.getIntExtra("edit", 0)
+            val pos = data.getIntExtra("pos", -1)
+            val editId = data.getLongExtra("id", -1)
+
+
 
             // 받아온 데이터로 아이템 추가
             if (type != null && product != null && expirationDate != null && num != null) {
-                val id = databaseHelper.addProduct(MyItem(-1, type, product, expirationDate, num))
-                val newItem = MyItem(id, type, product, expirationDate, num)
-                adapter.addItem(newItem)
-                checkExpirationDates()
+                if (edit == 1) {
+                    val updatedItem = MyItem(editId, type, product, expirationDate, num)
+                    databaseHelper.updateProduct(updatedItem)
+                    adapter.itemList[pos] = updatedItem
+                    adapter.notifyItemChanged(pos)
+                }
+                else {
+                    val id =
+                        databaseHelper.addProduct(MyItem(-1, type, product, expirationDate, num))
+                    val newItem = MyItem(id, type, product, expirationDate, num)
+                    adapter.addItem(newItem)
+                    checkExpirationDates()
+                }
             }
         }
 
@@ -314,10 +366,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 val jsonObject = jsonArray.getJSONObject(item)
                 val productName = jsonObject.getString("ProductName")
                 val unitPrice = jsonObject.getInt("UnitPrice")
-                val quantity = jsonObject.getInt("Quantity")
+                var quantity = jsonObject.getInt("Quantity")
                 val price = jsonObject.getInt("Price")
                 val cat = jsonObject.getString("Category")
                 val exp = jsonObject.getInt("Exp")
+
+                if (quantity < 1) {
+                    quantity = 1
+                }
 
                 productList.add(ProductData(productName, unitPrice, quantity, price, cat, exp))
             }
